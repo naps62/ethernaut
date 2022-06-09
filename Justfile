@@ -1,13 +1,15 @@
 set positional-arguments
 
-alias ty := test-yul
-alias sel := selector
+alias t := test
 
 selector sig:
   #!/bin/sh
   sig=$(cast sig $1)
   echo -n $sig | xclip -selection clipboard
   echo $sig "(copied to clipboard)"
+
+test *args='':
+  forge test --ffi --fork-url $ETH_RINKEBY_URL --fork-block-number $ETH_BLOCK_NUMBER $@
 
 test-yul *args='':
   forge test --ffi --match-path test/yul-samples/**/*.d.sol $@
