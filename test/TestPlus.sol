@@ -2,34 +2,43 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 
-contract Nonce is Test {
-    // run this test from rinkeby block 10822899
-    function test_EOA_deploys_contract() public {
-        address from = address(0x1057dc7277a319927D3eB43e05680B75a00eb5f4);
-        uint256 nonce = 10901;
-        address expected = address(0xd194e32904B8643E238B381181A9995D084F5786);
-        address actual = addressFrom(from, nonce);
-        require(actual == expected);
+abstract contract TestPlus is Test {
+    function getAddressNonce(address addr) internal returns (uint256) {
+        string[] memory inputs = new string[](2);
+        inputs[0] = "./ffi/cast-rinkeby-nonce";
+        inputs[1] = _addr2string(addr);
+
+        bytes memory res = vm.ffi(inputs);
+        return abi.decode(res, (uint256));
     }
 
-    // run this test from rinkeby block 10822969
-    function test_contract_deploys_contract() public {
-        address from = address(0x096bb5e93a204BfD701502EB6EF266a950217218);
-        address expected = address(0xB9cCB813005Af9A53AAD7F63B33AC5F5DD05937f);
-        uint256 nonce = 2018;
-        for (uint256 i = 0; i < 2050; ++i) {
-            address actual = addressFrom(from, i);
-            if (actual == expected) {
-                console.log("found", i);
-            }
+    function _addr2string(address account)
+        private
+        pure
+        returns (string memory)
+    {
+        return _addr2string(abi.encodePacked(account));
+    }
+
+    function _addr2string(bytes memory data)
+        private
+        pure
+        returns (string memory)
+    {
+        bytes memory alphabet = "0123456789abcdef";
+
+        bytes memory str = new bytes(2 + data.length * 2);
+        str[0] = "0";
+        str[1] = "x";
+        for (uint256 i = 0; i < data.length; i++) {
+            str[2 + i * 2] = alphabet[uint256(uint8(data[i] >> 4))];
+            str[3 + i * 2] = alphabet[uint256(uint8(data[i] & 0x0f))];
         }
-        // console.log(expected);
-        // console.log(actual);
-        require(1 == 2);
+        return string(str);
     }
 
-    function addressFrom(address _origin, uint256 _nonce)
-        public
+    function getCreateAddress(address _origin, uint256 _nonce)
+        internal
         pure
         returns (address)
     {
