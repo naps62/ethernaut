@@ -18,4 +18,4 @@ ethernaut-slow id:
   forge script test/$1*.sol --ffi --rpc-url $ETH_RINKEBY_URL -vvv --broadcast --private-key $ETH_RINKEBY_PRIV_KEY --slow
 
 status:
-  node scripts/status.sh
+  node scripts/status.js
