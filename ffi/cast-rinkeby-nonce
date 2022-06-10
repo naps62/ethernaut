@@ -1,13 +1,16 @@
 #!/bin/bash
 
-anvil --fork-url $ETH_RINKEBY_URL --fork-block-number $ETH_BLOCK_NUMBER &
+addr=$1
+block=$2
+
+anvil --fork-url $ETH_RINKEBY_URL --fork-block-number $block > /dev/null &
 
 while ! nc -z localhost 8545 > /dev/null; do   
   sleep 0.1 # wait for 1/10 of the second before check again
 done
 ANVIL_PID=$!
 
-nonce=$(cast nonce --rpc-url http://127.0.0.1:8545 $1 | tr -d '\n')
+nonce=$(cast nonce --rpc-url http://127.0.0.1:8545 $addr | tr -d '\n')
 
 kill $ANVIL_PID
 

