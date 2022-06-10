@@ -139,17 +139,17 @@ const payload = {
 axios
   .post(process.env.ETH_RINKEBY_URL, payload)
   .then((res) => {
-    solved = [];
+    solved = {};
 
     res.data.result.forEach((r) => {
       const address = getAddress(hexDataSlice(r.data, 12));
-      solved.push({ level: address, hash: r.transactionHash });
+      solved[address] = r.transactionHash;
     });
 
     levels.forEach((level) => {
-      const solution = solved.find((s) => s.level == level.address);
+      const solution = solved[level.address];
       if (solution) {
-        console.log(`${level.title}:\t${solution.hash}`);
+        console.log(`${level.title}:\t${solution}`);
       } else {
         console.log(`${level.title}:\tNOT SOLVED`);
       }
