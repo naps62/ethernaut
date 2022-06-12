@@ -32,39 +32,13 @@ contract CoinFlipAttacker {
 }
 
 contract Ethernaut03 is EthernautTest {
-    function setUp() public {
-        initialize(address(0x4dF32584890A0026e56f7535d0f2C6486753624f));
-    }
+    constructor() EthernautTest(3) {}
 
-    function run() public {
-        setUp();
-        deploy();
-        solve();
-        submit(me);
-    }
-
-    function test() public {
-        for (uint256 i = 0; i < 10; ++i) {
-            vm.roll(block.number + 1);
-            console.log(block.number);
-            console.logBytes32(blockhash(block.number - 1));
-        }
-        // testMode = true;
-        // deploy();
-        // solve();
-        // submit(me);
-    }
-
-    function solve() internal {
-        broadcastOrPrank();
+    function solve() internal override(EthernautTest) {
         CoinFlipAttacker attacker = new CoinFlipAttacker(ICoinFlip(instance));
 
-        for (uint256 i = 0; i < 2; ++i) {
-            console.log(block.number);
-            broadcastOrPrank();
+        for (uint256 i = 0; i < 10; ++i) {
             attacker.guessAndFlip();
-            console.log(block.number);
-
             vm.roll(block.number + 1);
         }
 

