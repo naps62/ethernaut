@@ -53,6 +53,10 @@ abstract contract EthernautTest is TestPlus {
     function test() public {
         controller.createLevelInstance(factory);
         solve();
+        require(
+            ILevel(factory).validateInstance(instance, address(this)),
+            "not solved"
+        );
         controller.submitLevelInstance(instance);
     }
 }
