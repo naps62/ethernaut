@@ -39,19 +39,26 @@ abstract contract EthernautTest is TestPlus {
     IController constant controller =
         IController(address(0xD991431D8b033ddCb84dAD257f4821E9d5b38C33));
 
+    mapping(uint256 => uint256) payables;
+
+    uint256 idx;
     address payable instance;
     address immutable factory;
 
-    constructor(uint256 idx) {
-        factory = factories[idx];
+    constructor(uint256 _idx) {
+        idx = _idx;
+        factory = factories[_idx];
         uint256 nonce = getAddressNonce(factory);
         instance = payable(getCreateAddress(factory, nonce));
+
+        payables[9] = 0.01 ether;
+        payables[10] = 0.01 ether;
     }
 
     function solve() internal virtual;
 
     function test() public {
-        controller.createLevelInstance(factory);
+        controller.createLevelInstance{value: payables[idx]}(factory);
         solve();
         require(
             ILevel(factory).validateInstance(instance, address(this)),
