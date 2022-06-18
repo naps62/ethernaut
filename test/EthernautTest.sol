@@ -48,11 +48,12 @@ abstract contract EthernautTest is TestPlus {
     constructor(uint256 _idx) {
         idx = _idx;
         factory = factories[_idx];
-        uint256 nonce = getAddressNonce(factory);
-        instance = payable(getCreateAddress(factory, nonce));
+        uint256 nonce = _getAddressNonce(factory);
+        instance = payable(_getCreateAddress(factory, nonce));
 
         payables[9] = 0.01 ether;
         payables[10] = 0.01 ether;
+        payables[17] = 0.001 ether;
     }
 
     function solve() internal virtual;

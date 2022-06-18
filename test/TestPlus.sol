@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 
 abstract contract TestPlus is Test {
-    function getAddressNonce(address addr) internal returns (uint256) {
+    function _getAddressNonce(address addr) internal returns (uint256) {
         string[] memory inputs = new string[](3);
         inputs[0] = "./ffi/cast-rinkeby-nonce";
         inputs[1] = _addr2string(addr);
@@ -64,7 +64,7 @@ abstract contract TestPlus is Test {
         return string(str);
     }
 
-    function getCreateAddress(address _origin, uint256 _nonce)
+    function _getCreateAddress(address _origin, uint256 _nonce)
         internal
         pure
         returns (address)
