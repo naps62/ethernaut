@@ -54,17 +54,24 @@ abstract contract EthernautTest is TestPlus {
         payables[9] = 0.01 ether;
         payables[10] = 0.01 ether;
         payables[17] = 0.001 ether;
+        payables[20] = 0.001 ether;
     }
 
     function solve() internal virtual;
 
     function test() public {
         controller.createLevelInstance{value: payables[idx]}(factory);
+
         solve();
+
         require(
-            ILevel(factory).validateInstance(instance, address(this)),
+            ILevel(factory).validateInstance{gas: 100000000}(
+                instance,
+                address(this)
+            ),
             "not solved"
         );
-        controller.submitLevelInstance(instance);
+
+        controller.submitLevelInstance{gas: 100000000}(instance);
     }
 }
