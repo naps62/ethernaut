@@ -6,6 +6,11 @@ import {IController} from "src/IController.sol";
 import {ILevel} from "src/ILevel.sol";
 
 abstract contract EthernautTest is TestPlus {
+    struct Factory {
+        address addr;
+        uint256 nonce;
+    }
+
     address[27] factories = [
         address(0x4E73b858fD5D7A5fc1c3455061dE52a53F35d966), // 00. Hello Ethernaut
         address(0x9CB391dbcD447E645D6Cb55dE6ca23164130D008), // 01. Fallback
@@ -36,6 +41,37 @@ abstract contract EthernautTest is TestPlus {
         address(0x128BA32Ec698610f2fF8f010A7b74f9985a6D17c) // 26. DoubleEntryPoint
     ];
 
+    /// These nonces are hardcoded for rinkeby block 10800000
+    uint256[27] nonces = [
+        16947, // 00. Hello Ethernaut
+        17218, // 01. Fallback
+        9008, // 02. Fallout
+        9567, // 03. Coin Flip
+        6421, // 04. Telephone
+        6529, // 05. Token
+        5753, // 06. Delegation
+        4561, // 07. Force
+        4695, // 08. Vault
+        2996, // 09. King
+        2541, // 10. Re-entrancy
+        2760, // 11. Elevator
+        2579, // 12. Privacy
+        2309, // 13. Gatekeeper One
+        1317, // 14. Gatekeeper Two
+        1976, // 15. Naught Coin
+        2581, // 16. Preservation
+        1053, // 17. Recovery
+        1409, // 18. MagicNumber
+        1589, // 19. Alien Codex
+        774, /// 20. Denial
+        838, /// 21. Shop
+        502, /// 22. Dex
+        241, /// 23. Dex Two
+        1213, // 24. Puzzle Wallet
+        339, //// 25. Motorbike
+        1197 /// 26. DoubleEntryPoint
+    ];
+
     IController constant controller =
         IController(address(0xD991431D8b033ddCb84dAD257f4821E9d5b38C33));
 
@@ -43,12 +79,12 @@ abstract contract EthernautTest is TestPlus {
 
     uint256 idx;
     address payable instance;
-    address immutable factory;
+    address factory;
 
     constructor(uint256 _idx) {
         idx = _idx;
         factory = factories[_idx];
-        uint256 nonce = _getAddressNonce(factory);
+        uint256 nonce = nonces[_idx];
         instance = payable(_getCreateAddress(factory, nonce));
 
         payables[9] = 0.01 ether;

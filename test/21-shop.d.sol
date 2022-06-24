@@ -3,6 +3,10 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 import {EthernautTest} from "./EthernautTest.sol";
 
+interface IToken {
+    function approve(address spender, uint256 amount) external;
+}
+
 interface IBuyer {
     function price() external returns (uint256);
 }

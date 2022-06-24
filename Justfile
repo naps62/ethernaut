@@ -9,10 +9,10 @@ selector sig:
   echo $sig "(copied to clipboard)"
 
 test *args='':
-  forge test --ffi --fork-url $ETH_RINKEBY_URL --fork-block-number $ETH_BLOCK_NUMBER $@
+  forge test --ffi --fork-url $ETH_RINKEBY_URL --fork-block-number 10800000 $@
 
 test-single *args='':
-  forge test --ffi --fork-url $ETH_RINKEBY_URL --fork-block-number $ETH_BLOCK_NUMBER --match-contract Ethernaut$1 $2
+  forge test --ffi --fork-url $ETH_RINKEBY_URL --fork-block-number 10800000 --match-contract Ethernaut$1 $2
 
 debug *args='':
-  forge debug --fork-url $ETH_RINKEBY_URL --fork-block-number $ETH_BLOCK_NUMBER test/$1-*.sol --target-contract Ethernaut$1 --sig "test()"
+  forge debug --fork-url $ETH_RINKEBY_URL --fork-block-number 10800000 /$1-*.sol --target-contract Ethernaut$1 --sig "test()"

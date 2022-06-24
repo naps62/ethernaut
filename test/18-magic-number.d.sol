@@ -10,6 +10,12 @@ interface IMagicNum {
 contract Ethernaut18 is EthernautTest {
     constructor() EthernautTest(18) {}
 
+    function run() public {
+        vm.broadcast();
+        // payable(address(this)).transfer(1);
+        address(0).call{gas: 10000}("");
+    }
+
     function solve() internal override(EthernautTest) {
         bytes memory init = hex"600a600c600039600a6000f3";
         bytes memory runtime = hex"602a60805260206080f3";
