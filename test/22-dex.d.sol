@@ -23,18 +23,6 @@ interface IDex {
     ) external;
 }
 
-// contract FakeBuyer {
-//     bool queried;
-
-//     function price() external view returns (uint256 result) {
-//         return IShop(msg.sender).isSold() ? 0 : 1000;
-//     }
-
-//     function buy(IShop shop) external {
-//         shop.buy();
-//     }
-// }
-
 contract Ethernaut22 is EthernautTest {
     constructor() EthernautTest(22) {}
 

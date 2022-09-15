@@ -2,6 +2,8 @@ set positional-arguments
 
 alias t := test
 
+alias g := gas
+
 selector sig:
   #!/bin/sh
   sig=$(cast sig $1)
@@ -16,3 +18,6 @@ test-single *args='':
 
 debug *args='':
   forge debug --fork-url $ETH_RINKEBY_URL --fork-block-number 10800000 /$1-*.sol --target-contract Ethernaut$1 --sig "test()"
+
+gas:
+  forge test --match-contract GasTest --gas-report
